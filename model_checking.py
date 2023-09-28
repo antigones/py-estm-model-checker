@@ -1,11 +1,10 @@
 from estm_rule_parser import ESTMRuleParser
 import random as rd
-from utils import get_neighbours, emoji_print
+from utils import get_neighbours
 from sympy.logic.inference import satisfiable
-from sympy.logic.boolalg import to_cnf, Equivalent
+from sympy.logic.boolalg import Equivalent
 from sympy import Symbol
 from sympy import Or,And, Not
-import timeit
 
 
 
@@ -103,11 +102,11 @@ img = [
 
 rule_parser = ESTMRuleParser(img)
 rules,weights,literals = rule_parser.calc_rules()
-map_size = (2,2)
+map_size = (2,1)
 model_ruleset, models = models_for_map(map_size=map_size, literals=literals, rule_dict=rules)
 
 print('*** MODELS FOR RULESET ***')
-
+print(rules)
 m, sorted_keys = format_models(models)
 print(",".join(sorted_keys))
 for mod in m:
