@@ -1,11 +1,9 @@
-from estm_rule_parser import ESTMRuleParser
 import random as rd
-from utils import get_neighbours
+from estm_model_checker.utils import get_neighbours
 from sympy.logic.inference import satisfiable
 from sympy.logic.boolalg import Equivalent
 from sympy import Symbol
 from sympy import Or,And, Not
-
 
 
 def format_models(models):
@@ -66,7 +64,7 @@ def models_for_map(map_size, literals, rule_dict):
     models = satisfiable(model_ruleset, all_models=True)
     return model_ruleset, models
 
-def pretty_print(model:dict, literals:list, size):
+def pretty_print(model:dict, size):
     height, width = size
     m = [['' for col in range(width)] for row in range(height)]
     for k,v in model.items():
@@ -83,31 +81,3 @@ def pretty_print(model:dict, literals:list, size):
 
 
 
-
-
-img = [
-        'LLLLLLLLLL',
-        'LLLLLLLLLL',
-        'LLLLLLLLLL',
-        'LLLLLLLLLL',
-        'LLLLLCLLCC',
-        'LLLLCSCCSS',
-        'LLLCSSSSSS',
-        'LLCSSSSSSS',
-        'LCSSSSSSSS',
-        'CSSSSSSSSS'
-        ]
-
-
-
-rule_parser = ESTMRuleParser(img)
-rules,weights,literals = rule_parser.calc_rules()
-map_size = (2,1)
-model_ruleset, models = models_for_map(map_size=map_size, literals=literals, rule_dict=rules)
-
-print('*** MODELS FOR RULESET ***')
-print(rules)
-m, sorted_keys = format_models(models)
-print(",".join(sorted_keys))
-for mod in m:
-    print(mod)
