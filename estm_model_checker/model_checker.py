@@ -5,19 +5,24 @@ from sympy.logic.boolalg import Equivalent
 from sympy import Symbol
 from sympy import Or,And, Not
 
+def get_headers(indexed_literals):
+    indexed_literals = [str(l) for l in indexed_literals]
+    sorted_headers = sorted(indexed_literals, key=lambda i: str(i).split('_')[::-1])
+    return sorted_headers
 
-def format_models(models):
+def format_models(indexed_literals,models):
+    sorted_headers = get_headers(indexed_literals=indexed_literals)
+    """Return a formatted table of models."""
     m = []
-    sorted_keys = []
     for model in models:
         if model:
             sorted_dict = dict(sorted(model.items(), key=lambda i: str(i[0]).split('_')[::-1]))
             sorted_values = list(sorted_dict.values())
             m.append(sorted_values)
-            sorted_keys = [str(key) for key, value in sorted_dict.items()]
-    return m, sorted_keys
+    return m, sorted_headers
         
 def generate_rules(map_size, literals, rule_dict):
+    """Generates the ruleset for a given size map starting from its set of literal and its ruledict."""
     indexed_literals = []
     indexed_ruleset = dict()
     uniqueness_rules = []
@@ -57,14 +62,15 @@ def generate_rules(map_size, literals, rule_dict):
     for u_rule in uniqueness_rules:
         iif_ruleset.append(Or(*u_rule))
     model_ruleset = And(*iif_ruleset)
-    return model_ruleset
+    return model_ruleset, indexed_literals
 
 def models_for_map(map_size, literals, rule_dict):
-    model_ruleset = generate_rules(map_size=map_size, literals=literals, rule_dict=rule_dict)
+    model_ruleset, indexed_literals = generate_rules(map_size=map_size, literals=literals, rule_dict=rule_dict)
     models = satisfiable(model_ruleset, all_models=True)
-    return model_ruleset, models
+    return model_ruleset, models, indexed_literals
 
 def pretty_print(model:dict, size):
+    """Uses the models to generate a new map."""
     height, width = size
     m = [['' for col in range(width)] for row in range(height)]
     for k,v in model.items():
