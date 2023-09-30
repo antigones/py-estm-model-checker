@@ -47,6 +47,13 @@ Rules:
 Output:
 ```
 (C_00 | L_00 | S_00) & (C_10 | L_10 | S_10) & (Equivalent(C_00, S_10 & ~C_10 & ~L_10)) & (Equivalent(C_10, L_00 & ~C_00 & ~S_00)) & (Equivalent(L_00, ~S_10 & (C_10 | L_10))) & (Equivalent(L_10, L_00 & ~C_00 & ~S_00)) & (Equivalent(S_00, S_10 & ~C_10 & ~L_10)) & (Equivalent(S_10, ~L_00 & (C_00 | S_00)))
+
+*** MODELS ***
+[{L_00: True, C_10: True, L_10: True, C_00: False, S_10: False, S_00: False}, {C_00: True, S_00: True, S_10: True, L_10: False, C_10: False, L_00: False}]
+*** MODELS FOR RULESET ***
+C_00,L_00,S_00,C_10,L_10,S_10
+[False, True, False, True, True, False]
+[True, False, True, False, False, True]
 ```
 
 The script was written trying to bridge the gap between Wave Function Collapse (in its "Even Simpler Model" form) to propositional rules, in order to study easy/hard to collapse maps.
